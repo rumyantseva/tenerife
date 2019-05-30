@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/rumyantseva/tenerife/internal/diagnostics"
 	"net"
 	"net/http"
 	"os"
@@ -24,6 +25,10 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", application.HomeHandler(logger))
+
+	r.HandleFunc("/healthz", diagnostics.LivenessHandler(logger))
+	r.HandleFunc("/readyz", diagnostics.ReadinessHandler(logger))
+
 
 	server := http.Server{
 		Addr: net.JoinHostPort("", port),
