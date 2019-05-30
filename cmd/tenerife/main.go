@@ -19,7 +19,10 @@ func main() {
 	logger := logrus.New()
 	logger.SetOutput(os.Stdout)
 
-	logger.Info("Starting the application")
+	logger.Infof(
+		"Starting the application: v.%s, commit:%s, buildTime:%s",
+		diagnostics.Version, diagnostics.Commit, diagnostics.BuildTime,
+		)
 
 	port := os.Getenv("PORT")
 	if port == "" {
