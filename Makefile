@@ -1,5 +1,5 @@
 PROJECT?=github.com/rumyantseva/tenerife
-VERSION?=0.0.2
+VERSION?=0.0.1
 
 COMMIT := git-$(shell git rev-parse --short HEAD)
 BUILD_TIME := $(shell date -u '+%Y-%m-%d_%H:%M:%S')
