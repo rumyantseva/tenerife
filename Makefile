@@ -8,8 +8,11 @@ test:
 	go test --race ./...
 
 build:
-	go build \
+	GO111MODULE=on CGO_ENABLED=0 go build \
 		-ldflags "-s -w -X ${PROJECT}/internal/diagnostics.Version=${VERSION} \
 		-X ${PROJECT}/internal/diagnostics.Commit=${COMMIT} \
 		-X ${PROJECT}/internal/diagnostics.BuildTime=${BUILD_TIME}" \
 		-o bin/tenerife ${PROJECT}/cmd/tenerife
+
+docker-build:
+	docker build -t tenerife .
