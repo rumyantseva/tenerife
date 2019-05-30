@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"net"
 	"net/http"
 	"os"
@@ -45,18 +46,23 @@ func main() {
 		err := server.ListenAndServe()
 		shutdown <- err
 	}()
+	logger.Infof("The service is ready to listen and serve")
 
 	select {
 	case killSignal := <-interrupt:
 		switch killSignal {
 		case os.Interrupt:
-			logger.Print("Got SIGINT...")
+			logger.Info("Got SIGINT...")
 		case syscall.SIGTERM:
-			logger.Print("Got SIGTERM...")
+			logger.Info("Got SIGTERM...")
 		}
 	case <-shutdown:
-		logger.Printf("Got an error...")
+		logger.Info("Got an error...")
 	}
 
-	//server.Shutdown()
+	logger.Infof("The service is stopping...")
+	err := server.Shutdown(context.Background())
+	if err != nil {
+		logger.Infof("Got an error during service shutdown: %v", err)
+	}
 }
